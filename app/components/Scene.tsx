@@ -196,6 +196,8 @@ export function Scene() {
         <ChromaticAberration
           offset={new THREE.Vector2(0.001, 0.001)}
           blendFunction={BlendFunction.NORMAL}
+          radialModulation={false}
+          modulationOffset={0}
         />
       </EffectComposer>
     </>

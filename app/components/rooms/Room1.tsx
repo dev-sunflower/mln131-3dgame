@@ -344,8 +344,8 @@ function Desk() {
 
       {/* Drawer handles */}
       {[-0.6, 0.6].map((x, idx) => (
-        <mesh key={idx} position={[x, 0.5, 0.58]}>
-          <cylinderGeometry args={[0.02, 0.02, 0.08, 8]} rotation={[Math.PI / 2, 0, 0]} />
+        <mesh key={idx} position={[x, 0.5, 0.58]} rotation={[Math.PI / 2, 0, 0]}>
+          <cylinderGeometry args={[0.02, 0.02, 0.08, 8]} />
           <meshStandardMaterial color="#b5894a" metalness={0.8} roughness={0.3} />
         </mesh>
       ))}
