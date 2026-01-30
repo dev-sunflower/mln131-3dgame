@@ -61,7 +61,7 @@ export function Inventory() {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mt-2 text-xs text-gray-400"
+            className="mt-2 text-xs text-gray-300"
           >
             {inventory.find((i) => i.id === selectedItem)?.description}
           </motion.div>

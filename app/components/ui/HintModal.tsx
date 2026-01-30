@@ -93,7 +93,7 @@ export function HintModal() {
                 <h3 className="text-xl font-display text-brass-gold tracking-wide">
                   {language === 'vi' ? currentHint.titleVi : currentHint.title}
                 </h3>
-                <p className="text-gray-500 text-xs uppercase tracking-widest">
+                <p className="text-gray-300 text-xs uppercase tracking-widest">
                   {language === 'vi' ? `HƯỚNG DẪN PHÒNG ${currentRoom + 1}` : `GUIDANCE FOR ROOM ${currentRoom + 1}`}
                 </p>
               </div>

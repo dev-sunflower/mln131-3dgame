@@ -36,7 +36,7 @@ export function KnowledgeSidebar() {
                 onClick={toggleSidebar}
                 className="p-2 hover:bg-white/10 rounded transition-colors"
               >
-                <X className="w-5 h-5 text-gray-400" />
+                <X className="w-5 h-5 text-gray-300" />
               </button>
             </div>
 
@@ -67,7 +67,7 @@ export function KnowledgeSidebar() {
                     )}
                     <h3
                       className={`font-display text-sm ${
-                        item.found ? 'text-parchment' : 'text-gray-600'
+                        item.found ? 'text-parchment' : 'text-gray-400'
                       }`}
                     >
                       {language === 'vi' ? item.titleVi : item.title}
@@ -88,7 +88,7 @@ export function KnowledgeSidebar() {
                             {language === 'vi' ? item.contentVi : item.content}
                           </p>
                           {language === 'en' && (
-                            <p className="text-xs text-gray-500 italic">
+                            <p className="text-xs text-gray-400 italic">
                               {item.contentVi}
                             </p>
                           )}
@@ -116,11 +116,11 @@ export function KnowledgeSidebar() {
                     transition={{ duration: 0.5 }}
                   />
                 </div>
-                <span className="text-sm text-gray-400">
+                <span className="text-sm text-gray-300">
                   {foundCount}/{knowledge.length}
                 </span>
               </div>
-              <p className="text-xs text-gray-500">Knowledge items discovered</p>
+              <p className="text-xs text-gray-300">Knowledge items discovered</p>
             </div>
           </div>
         </motion.div>

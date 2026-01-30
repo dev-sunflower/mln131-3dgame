@@ -126,7 +126,7 @@ export function VictoryScreen() {
               t.description
             )}
           </p>
-          <p className="mt-6 text-gray-300 text-sm leading-relaxed">
+          <p className="mt-6 text-parchment text-sm leading-relaxed">
             {t.detail}
           </p>
         </motion.div>

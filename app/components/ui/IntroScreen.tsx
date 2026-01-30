@@ -113,7 +113,7 @@ export function IntroScreen() {
           initial={{ y: 30, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.7 }}
-          className="text-xl text-gray-400 mb-2 font-display tracking-wide"
+          className="text-xl text-parchment mb-2 font-display tracking-wide"
         >
           {t.subtitle}
         </motion.p>
@@ -141,7 +141,7 @@ export function IntroScreen() {
                 {language === "en" ? `ROOM ${idx + 1}` : `PHÒNG ${idx + 1}`}
               </div>
               <div className="text-parchment text-sm">{room.name}</div>
-              <div className="text-gray-500 text-xs mt-1">{room.sub}</div>
+              <div className="text-gray-300 text-xs mt-1">{room.sub}</div>
             </div>
           ))}
         </motion.div>
@@ -152,7 +152,7 @@ export function IntroScreen() {
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 1.3 }}
           onClick={startGame}
-          className="mt-10 px-8 py-4 bg-gradient-to-r from-brass-dark to-brass-gold border border-brass-gold font-display text-lg tracking-widest rounded hover:shadow-[0_0_30px_rgba(181,137,74,0.5)] transition-all duration-300 flex items-center gap-3 mx-auto"
+          className="mt-10 px-8 py-4 bg-gradient-to-r from-brass-dark to-brass-gold border border-brass-gold text-[#0a0808] font-display text-lg tracking-widest rounded hover:shadow-[0_0_30px_rgba(181,137,74,0.5)] transition-all duration-300 flex items-center gap-3 mx-auto"
         >
           <Key className="w-5 h-5" />
           {t.button}
@@ -163,7 +163,7 @@ export function IntroScreen() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.5 }}
-          className="mt-6 text-gray-500 text-sm"
+          className="mt-6 text-gray-300 text-sm"
         >
           {t.hint}
         </motion.p>

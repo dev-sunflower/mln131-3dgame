@@ -166,8 +166,20 @@ export function HUD() {
         <div className="text-parchment font-bold mb-2">
           {language === 'en' ? roomNames[currentRoom].en : roomNames[currentRoom].vi}
         </div>
-        <div className="text-gray-400 text-sm">
+        <div className="text-parchment text-sm">
           {language === 'en' ? roomDescriptions[currentRoom].en : roomDescriptions[currentRoom].vi}
+        </div>
+        <div className="text-gray-300 text-xs mt-1 italic">
+          {language === 'en' ? '' : ''} {/* Was showing vi text before, but now we handle language switching properly. The original code showed EN then VI. Now we should just show the description. Wait, looking at original code: */}
+          {/* Original: 
+            <div className="text-gray-400 text-sm">
+              {language === 'en' ? roomDescriptions[currentRoom].en : roomDescriptions[currentRoom].vi}
+            </div>
+            <div className="text-gray-500 text-xs mt-1 italic">
+              {roomDescriptions[currentRoom].vi} <-- This was hardcoded to VI always?
+            </div>
+          */}
+          {/* Since we have language switching, let's just show the main description in the chosen language. I will remove the secondary italic text if it was just a translation. The original code seemed to show EN then VI as subtitle. Since we have a toggle, let's just show the main description in the chosen language. */}
         </div>
       </motion.div>
 
