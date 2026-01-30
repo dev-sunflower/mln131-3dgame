@@ -94,7 +94,7 @@ export function HintModal() {
                   {language === 'vi' ? currentHint.titleVi : currentHint.title}
                 </h3>
                 <p className="text-gray-500 text-xs uppercase tracking-widest">
-                  Guidance for Room {currentRoom + 1}
+                  {language === 'vi' ? `HƯỚNG DẪN PHÒNG ${currentRoom + 1}` : `GUIDANCE FOR ROOM ${currentRoom + 1}`}
                 </p>
               </div>
             </div>
@@ -116,7 +116,7 @@ export function HintModal() {
               onClick={toggleHint}
               className="mt-8 w-full py-3 border border-brass-gold text-brass-gold font-display text-sm tracking-widest hover:bg-brass-gold/20 transition-all"
             >
-              I UNDERSTAND
+              {language === 'vi' ? 'ĐÃ HIỂU' : 'I UNDERSTAND'}
             </button>
           </motion.div>
         </motion.div>

@@ -10,6 +10,7 @@ import {
   VolumeX,
   ChevronLeft,
   ChevronRight,
+  Globe,
 } from 'lucide-react';
 import { useGameState } from '../../hooks/useGameState';
 
@@ -27,6 +28,8 @@ export function HUD() {
     resetRoom,
     examineMode,
     exitExamineMode,
+    language,
+    setLanguage,
   } = useGameState();
 
   const roomNames = [
@@ -79,7 +82,7 @@ export function HUD() {
       <header className="fixed top-0 left-0 right-0 z-40 p-4 flex justify-between items-center bg-gradient-to-b from-black/80 to-transparent">
         <div className="flex items-center gap-4">
           <h1 className="text-xl font-display font-bold text-brass-gold tracking-wider">
-            THE GREAT TRANSITION
+            {language === 'en' ? 'THE GREAT TRANSITION' : 'CUỘC CHUYỂN ĐỔI VĨ ĐẠI'}
           </h1>
 
           {/* Room progress indicators */}
@@ -102,9 +105,20 @@ export function HUD() {
         {/* Control buttons */}
         <div className="flex items-center gap-3">
           <button
+            onClick={() => setLanguage(language === 'en' ? 'vi' : 'en')}
+            className="p-2 hover:bg-white/10 rounded transition-colors flex items-center gap-1 border border-transparent hover:border-brass-gold/30"
+            title="Switch Language"
+          >
+            <Globe className="w-5 h-5 text-brass-gold" />
+            <span className="text-xs font-display text-brass-gold w-6 text-center">
+              {language.toUpperCase()}
+            </span>
+          </button>
+
+          <button
             onClick={toggleHint}
             className="p-2 hover:bg-white/10 rounded transition-colors"
-            title="Hint"
+            title={language === 'en' ? 'Hint' : 'Gợi ý'}
           >
             <HelpCircle className="w-5 h-5 text-brass-gold" />
           </button>
@@ -112,7 +126,7 @@ export function HUD() {
           <button
             onClick={() => resetRoom(currentRoom)}
             className="p-2 hover:bg-white/10 rounded transition-colors"
-            title="Reset Room"
+            title={language === 'en' ? 'Reset Room' : 'Đặt lại phòng'}
           >
             <RotateCcw className="w-5 h-5 text-brass-gold" />
           </button>
@@ -120,7 +134,7 @@ export function HUD() {
           <button
             onClick={toggleSound}
             className="p-2 hover:bg-white/10 rounded transition-colors"
-            title={soundEnabled ? 'Mute' : 'Unmute'}
+            title={soundEnabled ? (language === 'en' ? 'Mute' : 'Tắt tiếng') : (language === 'en' ? 'Unmute' : 'Bật tiếng')}
           >
             {soundEnabled ? (
               <Volume2 className="w-5 h-5 text-brass-gold" />
@@ -132,7 +146,7 @@ export function HUD() {
           <button
             onClick={toggleSidebar}
             className="p-2 hover:bg-white/10 rounded transition-colors"
-            title="Knowledge Base"
+            title={language === 'en' ? 'Knowledge Base' : 'Kho tàng kiến thức'}
           >
             <BookOpen className="w-5 h-5 text-brass-gold" />
           </button>
@@ -147,16 +161,13 @@ export function HUD() {
         className="fixed top-20 left-4 z-30 p-4 bg-black/70 backdrop-blur-sm border border-brass-gold/30 rounded-lg max-w-xs"
       >
         <div className="text-brass-gold font-display text-sm mb-1">
-          ROOM {currentRoom + 1} / 3
+          {language === 'en' ? `ROOM ${currentRoom + 1} / 3` : `PHÒNG ${currentRoom + 1} / 3`}
         </div>
         <div className="text-parchment font-bold mb-2">
-          {roomNames[currentRoom].en}
+          {language === 'en' ? roomNames[currentRoom].en : roomNames[currentRoom].vi}
         </div>
         <div className="text-gray-400 text-sm">
-          {roomDescriptions[currentRoom].en}
-        </div>
-        <div className="text-gray-500 text-xs mt-1 italic">
-          {roomDescriptions[currentRoom].vi}
+          {language === 'en' ? roomDescriptions[currentRoom].en : roomDescriptions[currentRoom].vi}
         </div>
       </motion.div>
 
@@ -221,7 +232,9 @@ export function HUD() {
       {examineMode && (
         <div className="fixed top-20 right-4 z-30 px-4 py-2 bg-brass-gold/20 border border-brass-gold rounded-lg">
           <span className="text-brass-gold font-display text-sm">
-            EXAMINE MODE - Drag to rotate, scroll to zoom
+            {language === 'en' 
+              ? 'EXAMINE MODE - Drag to rotate, scroll to zoom' 
+              : 'CHẾ ĐỘ SOI - Kéo để xoay, lăn chuột để phóng to'}
           </span>
         </div>
       )}

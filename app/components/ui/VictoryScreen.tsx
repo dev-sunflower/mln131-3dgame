@@ -7,6 +7,38 @@ import { useGameState } from '../../hooks/useGameState';
 export function VictoryScreen() {
   const { language } = useGameState();
 
+  const content = {
+    en: {
+      title: 'CONGRATULATIONS!',
+      subtitle: 'CHÚC MỪNG BẠN!', // Keep subtitle as a stylistic choice or translate? Let's translate it properly or remove.
+      // Actually, let's make it consistent.
+      title_main: 'CONGRATULATIONS!',
+      title_sub: 'You have completed the journey',
+      description: 'You have successfully navigated the mysteries of social evolution and unlocked the path to Communist Society!',
+      detail: 'As an FPT Student, you now understand the great transition. Armed with knowledge of digital transformation, innovation, and social justice, you are ready to build the future.',
+      badges: {
+        theorist: 'THEORIST',
+        pioneer: 'PIONEER',
+        citizen: 'CITIZEN'
+      },
+      button: 'PLAY AGAIN'
+    },
+    vi: {
+      title_main: 'CHÚC MỪNG BẠN!',
+      title_sub: 'Bạn đã hoàn thành hành trình',
+      description: 'Bạn đã xuất sắc vượt qua những bí ẩn của sự tiến hóa xã hội và mở ra con đường đến với Xã hội Cộng sản!',
+      detail: 'Là một sinh viên FPT, bạn đã thấu hiểu cuộc chuyển đổi vĩ đại. Được trang bị kiến thức về chuyển đổi số, đổi mới sáng tạo và công bằng xã hội, bạn đã sẵn sàng kiến tạo tương lai.',
+      badges: {
+        theorist: 'NHÀ LÝ LUẬN',
+        pioneer: 'NGƯỜI TIÊN PHONG',
+        citizen: 'CÔNG DÂN'
+      },
+      button: 'CHƠI LẠI'
+    }
+  };
+
+  const t = content[language];
+
   return (
     <div className="fixed inset-0 bg-[#0a0a0f] flex items-center justify-center overflow-hidden">
       <div className="vignette" />
@@ -59,7 +91,7 @@ export function VictoryScreen() {
           className="text-5xl font-display font-bold text-brass-gold mb-4 tracking-widest"
           style={{ textShadow: '0 0 20px rgba(181, 137, 74, 0.5)' }}
         >
-          CONGRATULATIONS!
+          {t.title_main}
         </motion.h1>
 
         <motion.p
@@ -68,7 +100,7 @@ export function VictoryScreen() {
           transition={{ delay: 0.7 }}
           className="text-2xl text-parchment font-display mb-6 italic"
         >
-          CHÚC MỪNG BẠN!
+          {t.title_sub}
         </motion.p>
 
         <motion.div
@@ -78,13 +110,24 @@ export function VictoryScreen() {
           className="p-8 bg-black/50 border border-brass-gold/30 rounded-lg backdrop-blur-sm mb-8"
         >
           <p className="text-parchment text-lg mb-4 leading-relaxed">
-            You have successfully navigated the mysteries of social evolution and unlocked the path to <span className="text-brass-gold font-bold">Communist Society</span>!
+            {t.description.split('Communist Society').length > 1 ? (
+              <>
+                {t.description.split('Communist Society')[0]}
+                <span className="text-brass-gold font-bold">Communist Society</span>
+                {t.description.split('Communist Society')[1]}
+              </>
+            ) : t.description.split('Xã hội Cộng sản').length > 1 ? (
+              <>
+                {t.description.split('Xã hội Cộng sản')[0]}
+                <span className="text-brass-gold font-bold">Xã hội Cộng sản</span>
+                {t.description.split('Xã hội Cộng sản')[1]}
+              </>
+            ) : (
+              t.description
+            )}
           </p>
-          <p className="text-gray-400 leading-relaxed italic">
-            Bạn đã xuất sắc vượt qua những bí ẩn của sự tiến hóa xã hội và mở ra con đường đến với <span className="text-brass-gold font-bold">Xã hội Cộng sản</span>!
-          </p>
-          <p className="mt-6 text-gray-300 text-sm">
-            As an FPT Student, you now understand the great transition. Armed with knowledge of digital transformation, innovation, and social justice, you are ready to build the future.
+          <p className="mt-6 text-gray-300 text-sm leading-relaxed">
+            {t.detail}
           </p>
         </motion.div>
 
@@ -98,19 +141,19 @@ export function VictoryScreen() {
             <div className="p-4 bg-brass-gold/10 border border-brass-gold/30 rounded-full">
               <Award className="w-6 h-6 text-brass-gold" />
             </div>
-            <span className="text-brass-gold text-xs font-display">THEORIST</span>
+            <span className="text-brass-gold text-xs font-display">{t.badges.theorist}</span>
           </div>
           <div className="flex flex-col items-center gap-2">
             <div className="p-4 bg-brass-gold/10 border border-brass-gold/30 rounded-full">
               <GraduationCap className="w-6 h-6 text-brass-gold" />
             </div>
-            <span className="text-brass-gold text-xs font-display">PIONEER</span>
+            <span className="text-brass-gold text-xs font-display">{t.badges.pioneer}</span>
           </div>
           <div className="flex flex-col items-center gap-2">
             <div className="p-4 bg-brass-gold/10 border border-brass-gold/30 rounded-full">
               <Globe className="w-6 h-6 text-brass-gold" />
             </div>
-            <span className="text-brass-gold text-xs font-display">CITIZEN</span>
+            <span className="text-brass-gold text-xs font-display">{t.badges.citizen}</span>
           </div>
         </motion.div>
 
@@ -122,7 +165,7 @@ export function VictoryScreen() {
           className="mt-12 px-8 py-3 border border-brass-gold text-brass-gold font-display tracking-widest hover:bg-brass-gold/20 transition-all flex items-center gap-2 mx-auto"
         >
           <RotateCcw className="w-4 h-4" />
-          PLAY AGAIN
+          {t.button}
         </motion.button>
       </motion.div>
     </div>
