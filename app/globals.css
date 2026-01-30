@@ -1,0 +1,169 @@
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --brass-gold: #b5894a;
+  --brass-dark: #8b6914;
+  --wood-dark: #2a1810;
+  --wood-medium: #4a3020;
+  --candlelight: #ffaa44;
+  --parchment: #d4c4a8;
+  --mystery-blue: #1a3a5c;
+  --shadow: #0a0a0f;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  overflow: hidden;
+  background: var(--shadow);
+  color: var(--parchment);
+  font-family: 'Cormorant Garamond', serif;
+}
+
+.font-display {
+  font-family: 'Playfair Display', serif;
+}
+
+.font-serif {
+  font-family: 'Crimson Pro', serif;
+}
+
+/* Canvas */
+canvas {
+  outline: none;
+}
+
+/* Crosshair */
+.crosshair {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 100;
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(181, 137, 74, 0.3);
+  border-radius: 50%;
+}
+
+.crosshair::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 4px;
+  height: 4px;
+  background: var(--brass-gold);
+  border-radius: 50%;
+  box-shadow: 0 0 5px var(--brass-gold);
+}
+
+/* Vignette */
+.vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+  background: radial-gradient(circle, transparent 30%, rgba(0,0,0,0.8) 100%);
+}
+
+/* Scan lines */
+.scan-lines {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.05) 0px,
+    rgba(0, 0, 0, 0.05) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  opacity: 0.5;
+}
+
+/* Glow effects */
+.glow-brass {
+  box-shadow: 0 0 15px var(--brass-gold);
+}
+
+.text-glow-brass {
+  text-shadow: 0 0 10px rgba(181, 137, 74, 0.5);
+}
+
+/* Loading Bar */
+.loading-bar {
+  width: 200px;
+  height: 2px;
+  background: rgba(181, 137, 74, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.loading-bar-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: var(--brass-gold);
+  box-shadow: 0 0 10px var(--brass-gold);
+  animation: loading 2s ease-in-out infinite;
+}
+
+@keyframes loading {
+  0% { left: -100%; width: 100%; }
+  100% { left: 100%; width: 100%; }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--shadow);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--brass-dark);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--brass-gold);
+}
+
+/* Transitions */
+.room-transition {
+  position: fixed;
+  inset: 0;
+  background: black;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+/* Atmospheric elements */
+.dust-particle {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* Responsive UI */
+@media (max-width: 768px) {
+  .hud-room-info {
+    display: none;
+  }
+}
