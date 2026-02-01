@@ -4,7 +4,6 @@ import { useRef, useEffect } from 'react';
 import { useThree, useFrame } from '@react-three/fiber';
 import {
   OrbitControls,
-  Environment,
   PerspectiveCamera,
 } from '@react-three/drei';
 import {
@@ -92,55 +91,172 @@ function DustParticles() {
 
 // Camera controller that switches between room and examine mode
 function CameraController() {
-  const { examineMode, examinedObject, currentRoom } = useGameState();
+  const { examineMode, currentRoom } = useGameState();
   const controlsRef = useRef<any>(null);
   const { camera } = useThree();
 
-  // Room camera positions
-  const roomPositions: { [key: number]: [number, number, number] } = {
-    0: [0, 1.6, 4],
-    1: [0, 1.6, 5],
-    2: [0, 1.6, 4.5],
+  // Room camera positions and settings
+  const roomSettings: {
+    [key: number]: {
+      position: [number, number, number];
+      target: [number, number, number];
+      minDistance: number;
+      maxDistance: number;
+      minAzimuth: number;
+      maxAzimuth: number;
+      minPolar: number;
+      maxPolar: number;
+      rotateSpeed: number;
+      dampingFactor: number;
+    }
+  } = {
+    0: {
+      position: [0, 1.6, 4],
+      target: [0, 1, 0],
+      minDistance: 3,
+      maxDistance: 6,
+      minAzimuth: -Math.PI / 4,
+      maxAzimuth: Math.PI / 4,
+      minPolar: Math.PI / 6,
+      maxPolar: Math.PI / 1.5,
+      rotateSpeed: 0.5,
+      dampingFactor: 0.05,
+    },
+    1: {
+      position: [0, 1.6, 5],
+      target: [0, 1, 0],
+      minDistance: 3,
+      maxDistance: 6,
+      minAzimuth: -Math.PI / 4,
+      maxAzimuth: Math.PI / 4,
+      minPolar: Math.PI / 6,
+      maxPolar: Math.PI / 1.5,
+      rotateSpeed: 0.5,
+      dampingFactor: 0.05,
+    },
+    2: {
+      // Room 3 - Large mechanical room with wider camera movement
+      position: [0, 2.5, 6],
+      target: [0, 1.5, -1],
+      minDistance: 4,
+      maxDistance: 10,
+      // Much wider horizontal rotation
+      minAzimuth: -Math.PI / 2.5,
+      maxAzimuth: Math.PI / 2.5,
+      // Allows looking up and down more
+      minPolar: Math.PI / 8,
+      maxPolar: Math.PI / 1.8,
+      // Slower, smoother movement
+      rotateSpeed: 0.3,
+      dampingFactor: 0.03,
+    },
   };
 
   useEffect(() => {
-    if (!examineMode && controlsRef.current) {
+    if (!controlsRef.current) return;
+
+    const settings = roomSettings[currentRoom] || roomSettings[0];
+
+    if (!examineMode) {
       // Reset to room view
-      const targetPos = roomPositions[currentRoom] || [0, 1.6, 4];
-      camera.position.set(...targetPos);
-      controlsRef.current.target.set(0, 1, 0);
+      camera.position.set(...settings.position);
+      controlsRef.current.target.set(...settings.target);
     }
+
+    // Update control limits based on room
+    controlsRef.current.minDistance = examineMode ? 1 : settings.minDistance;
+    controlsRef.current.maxDistance = examineMode ? 5 : settings.maxDistance;
+    controlsRef.current.minAzimuthAngle = examineMode ? -Infinity : settings.minAzimuth;
+    controlsRef.current.maxAzimuthAngle = examineMode ? Infinity : settings.maxAzimuth;
+    controlsRef.current.minPolarAngle = settings.minPolar;
+    controlsRef.current.maxPolarAngle = settings.maxPolar;
+    controlsRef.current.rotateSpeed = settings.rotateSpeed;
+    controlsRef.current.dampingFactor = settings.dampingFactor;
+
   }, [examineMode, currentRoom, camera]);
+
+  const settings = roomSettings[currentRoom] || roomSettings[0];
 
   return (
     <OrbitControls
       ref={controlsRef}
       enablePan={examineMode}
-      enableZoom={examineMode}
+      enableZoom={examineMode || currentRoom === 2} // Allow zoom in Room 3
       enableRotate={true}
-      minDistance={examineMode ? 1 : 3}
-      maxDistance={examineMode ? 4 : 6}
-      minPolarAngle={Math.PI / 6}
-      maxPolarAngle={Math.PI / 1.5}
-      minAzimuthAngle={examineMode ? -Infinity : -Math.PI / 4}
-      maxAzimuthAngle={examineMode ? Infinity : Math.PI / 4}
-      dampingFactor={0.05}
-      rotateSpeed={0.5}
+      minDistance={examineMode ? 1 : settings.minDistance}
+      maxDistance={examineMode ? 5 : settings.maxDistance}
+      minPolarAngle={settings.minPolar}
+      maxPolarAngle={settings.maxPolar}
+      minAzimuthAngle={examineMode ? -Infinity : settings.minAzimuth}
+      maxAzimuthAngle={examineMode ? Infinity : settings.maxAzimuth}
+      dampingFactor={settings.dampingFactor}
+      rotateSpeed={settings.rotateSpeed}
+      enableDamping={true}
+      // Smoother zooming
+      zoomSpeed={0.5}
     />
   );
 }
 
-// Main scene component
-export function Scene() {
-  const { currentRoom, isTransitioning } = useGameState();
+// Room-specific lighting
+function RoomLighting({ currentRoom }: { currentRoom: number }) {
+  const { room3State } = useGameState();
+  const powered = room3State.devicePowered;
 
+  if (currentRoom === 2) {
+    // Room 3 - Dark mechanical room, brighter when powered
+    return (
+      <>
+        {/* Ambient light - brighter when powered */}
+        <ambientLight
+          intensity={powered ? 0.4 : 0.15}
+          color={powered ? '#3a5a7a' : '#1a2030'}
+        />
+
+        {/* Main directional light */}
+        <directionalLight
+          position={[0, 10, -5]}
+          intensity={powered ? 0.8 : 0.3}
+          color={powered ? '#6688cc' : '#4466aa'}
+          castShadow
+          shadow-mapSize={[2048, 2048]}
+          shadow-camera-far={25}
+          shadow-camera-left={-12}
+          shadow-camera-right={12}
+          shadow-camera-top={12}
+          shadow-camera-bottom={-12}
+        />
+
+        {/* Fill light from front */}
+        <directionalLight
+          position={[0, 3, 8]}
+          intensity={powered ? 0.3 : 0.1}
+          color={powered ? '#4a6a8a' : '#334455'}
+        />
+
+        {/* Additional lights when powered */}
+        {powered && (
+          <>
+            <directionalLight
+              position={[-5, 5, 0]}
+              intensity={0.3}
+              color="#5588aa"
+            />
+            <directionalLight
+              position={[5, 5, 0]}
+              intensity={0.3}
+              color="#5588aa"
+            />
+          </>
+        )}
+      </>
+    );
+  }
+
+  // Default lighting for other rooms
   return (
     <>
-      {/* Camera */}
-      <PerspectiveCamera makeDefault fov={60} position={[0, 1.6, 4]} />
-      <CameraController />
-
-      {/* Ambient lighting - increased brightness */}
+      {/* Ambient lighting */}
       <ambientLight intensity={0.4} color="#2a4a7c" />
 
       {/* Main directional light - moonlight through window */}
@@ -161,19 +277,62 @@ export function Scene() {
       <CandleLight position={[-2, 1.5, 0]} intensity={2.0} />
       <CandleLight position={[2, 1.5, -1]} intensity={1.8} />
       <CandleLight position={[0, 2, -2]} intensity={1.5} />
+    </>
+  );
+}
 
-      {/* Dust particles */}
-      <DustParticles />
-
-      {/* Floor */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
-        <planeGeometry args={[20, 20]} />
+// Room-specific floor
+function RoomFloor({ currentRoom }: { currentRoom: number }) {
+  if (currentRoom === 2) {
+    // Room 3 - Industrial metal floor
+    return (
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, -1]} receiveShadow>
+        <planeGeometry args={[20, 16]} />
         <meshStandardMaterial
-          color="#2a1e12"
-          roughness={0.8}
-          metalness={0.1}
+          color="#0a0a10"
+          roughness={0.7}
+          metalness={0.3}
         />
       </mesh>
+    );
+  }
+
+  // Default wooden floor
+  return (
+    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
+      <planeGeometry args={[20, 20]} />
+      <meshStandardMaterial
+        color="#2a1e12"
+        roughness={0.8}
+        metalness={0.1}
+      />
+    </mesh>
+  );
+}
+
+// Main scene component
+export function Scene() {
+  const { currentRoom, room3State } = useGameState();
+  const powered = room3State.devicePowered;
+
+  return (
+    <>
+      {/* Camera */}
+      <PerspectiveCamera
+        makeDefault
+        fov={currentRoom === 2 ? 55 : 60}
+        position={currentRoom === 2 ? [0, 2.5, 6] : [0, 1.6, 4]}
+      />
+      <CameraController />
+
+      {/* Room-specific lighting */}
+      <RoomLighting currentRoom={currentRoom} />
+
+      {/* Dust particles - only for non-mechanical rooms */}
+      {currentRoom !== 2 && <DustParticles />}
+
+      {/* Room-specific floor */}
+      <RoomFloor currentRoom={currentRoom} />
 
       {/* Room content based on current room */}
       {currentRoom === 0 && <Room1 />}
@@ -183,14 +342,14 @@ export function Scene() {
       {/* Post-processing effects */}
       <EffectComposer>
         <Bloom
-          intensity={0.5}
-          luminanceThreshold={0.6}
+          intensity={currentRoom === 2 ? (powered ? 0.5 : 0.3) : 0.5}
+          luminanceThreshold={currentRoom === 2 ? (powered ? 0.5 : 0.7) : 0.6}
           luminanceSmoothing={0.9}
           blendFunction={BlendFunction.ADD}
         />
         <Vignette
-          offset={0.3}
-          darkness={0.4}
+          offset={currentRoom === 2 ? (powered ? 0.3 : 0.4) : 0.3}
+          darkness={currentRoom === 2 ? (powered ? 0.3 : 0.6) : 0.4}
           blendFunction={BlendFunction.NORMAL}
         />
         <ChromaticAberration
@@ -200,6 +359,11 @@ export function Scene() {
           modulationOffset={0}
         />
       </EffectComposer>
+
+      {/* Fog for Room 3 - lighter when powered */}
+      {currentRoom === 2 && (
+        <fog attach="fog" args={[powered ? '#101520' : '#050510', powered ? 10 : 8, powered ? 25 : 20]} />
+      )}
     </>
   );
 }
