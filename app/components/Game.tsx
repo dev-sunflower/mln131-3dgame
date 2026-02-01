@@ -10,6 +10,7 @@ import { KnowledgeSidebar } from './ui/KnowledgeSidebar';
 import { IntroScreen } from './ui/IntroScreen';
 import { VictoryScreen } from './ui/VictoryScreen';
 import { HintModal } from './ui/HintModal';
+import { Room3Overlay } from './rooms/room3';
 import { useGameState } from '../hooks/useGameState';
 
 function LoadingScreen() {
@@ -28,7 +29,7 @@ function LoadingScreen() {
 }
 
 export function Game() {
-  const { showIntro, gameComplete, examineMode } = useGameState();
+  const { showIntro, gameComplete, examineMode, currentRoom } = useGameState();
 
   // Lock pointer on click when not in examine mode
   useEffect(() => {
@@ -81,6 +82,7 @@ export function Game() {
       <Inventory />
       <KnowledgeSidebar />
       <HintModal />
+      {currentRoom === 2 && <Room3Overlay />}
 
       {/* Crosshair */}
       {!examineMode && (

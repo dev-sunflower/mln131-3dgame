@@ -18,7 +18,7 @@ import * as THREE from 'three';
 import { useGameState } from '../hooks/useGameState';
 import { Room1 } from './rooms/Room1';
 import { Room2 } from './rooms/Room2';
-import { Room3 } from './rooms/Room3';
+import { Room3 } from './rooms/room3';
 
 // Flickering candle light component
 function CandleLight({ position, intensity = 1 }: { position: [number, number, number]; intensity?: number }) {

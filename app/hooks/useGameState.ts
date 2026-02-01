@@ -31,9 +31,11 @@ export interface Room2PuzzleState {
   machineActivated: boolean;
 }
 
+// Core status for Room 3
+export type CoreStatus = 'locked' | 'unlocked' | 'assembled';
+
 export interface Room3PuzzleState {
-  componentsPlaced: string[];
-  componentsCollected: string[];
+  cores: Record<string, { status: CoreStatus }>;
   devicePowered: boolean;
   badgeObtained: boolean;
 }
@@ -104,9 +106,8 @@ interface GameStore {
   activateMachine: () => void;
 
   // Room 3 actions
-  collectComponent: (componentId: string) => void;
-  placeComponent: (componentId: string) => void;
-  powerDevice: () => void;
+  unlockCore: (coreId: string) => void;
+  assembleCore: (coreId: string) => void;
   obtainBadge: () => void;
 
   // UI actions
@@ -206,8 +207,11 @@ export const useGameState = create<GameStore>((set, get) => ({
   },
 
   room3State: {
-    componentsPlaced: [],
-    componentsCollected: [],
+    cores: {
+      innovation: { status: 'locked' },
+      digital: { status: 'locked' },
+      justice: { status: 'locked' },
+    },
     devicePowered: false,
     badgeObtained: false,
   },
@@ -331,25 +335,36 @@ export const useGameState = create<GameStore>((set, get) => ({
   },
 
   // Room 3 actions
-  collectComponent: (componentId) => set((state) => ({
+  unlockCore: (coreId) => set((state) => ({
     room3State: {
       ...state.room3State,
-      componentsCollected: [...state.room3State.componentsCollected, componentId],
+      cores: {
+        ...state.room3State.cores,
+        [coreId]: { status: 'unlocked' },
+      },
     },
   })),
-  placeComponent: (componentId) => set((state) => ({
-    room3State: {
-      ...state.room3State,
-      componentsPlaced: [...state.room3State.componentsPlaced, componentId],
-      componentsCollected: state.room3State.componentsCollected.filter((c) => c !== componentId),
-    },
-  })),
-  powerDevice: () => {
-    const state = get();
-    state.addKnowledge('fpt');
+  assembleCore: (coreId) => {
     set((state) => ({
-      room3State: { ...state.room3State, devicePowered: true },
+      room3State: {
+        ...state.room3State,
+        cores: {
+          ...state.room3State.cores,
+          [coreId]: { status: 'assembled' },
+        },
+      },
     }));
+    // Check if all cores are assembled, then auto-power device
+    const state = get();
+    const allAssembled = Object.values(state.room3State.cores).every(
+      (core) => core.status === 'assembled'
+    );
+    if (allAssembled && !state.room3State.devicePowered) {
+      state.addKnowledge('fpt');
+      set((s) => ({
+        room3State: { ...s.room3State, devicePowered: true },
+      }));
+    }
   },
   obtainBadge: () => {
     set((state) => ({
@@ -384,8 +399,11 @@ export const useGameState = create<GameStore>((set, get) => ({
     } else if (room === 2) {
       set({
         room3State: {
-          componentsPlaced: [],
-          componentsCollected: [],
+          cores: {
+            innovation: { status: 'locked' },
+            digital: { status: 'locked' },
+            justice: { status: 'locked' },
+          },
           devicePowered: false,
           badgeObtained: false,
         },
