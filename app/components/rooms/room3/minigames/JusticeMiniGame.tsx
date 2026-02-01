@@ -1,24 +1,21 @@
 'use client';
 
-import { AnagramGame } from './AnagramGame';
+import { innovationQuestions } from './innovation/innovationQuestions';
+import { TileAnagramGame } from './innovation/TileAnagramGame';
 
-const QUESTIONS = [
-  { scrambled: '', answer: 'EQUALITY', hint: 'Same rights for all' },
-  { scrambled: '', answer: 'FREEDOM', hint: 'Liberty to act and speak' },
-  { scrambled: '', answer: 'RIGHTS', hint: 'What every person deserves' },
-];
+const TIME_LIMIT = 120; // 2 minutes
 
 interface Props {
   onComplete: () => void;
   onClose: () => void;
 }
 
+
 export function JusticeMiniGame({ onComplete, onClose }: Props) {
   return (
-    <AnagramGame
-      questions={QUESTIONS}
-      title="Justice Core"
-      color="#ffd700"
+   <TileAnagramGame
+      questions={innovationQuestions}
+      timeLimit={TIME_LIMIT}
       onComplete={onComplete}
       onClose={onClose}
     />

@@ -1,26 +1,23 @@
 'use client';
 
-import { AnagramGame } from './AnagramGame';
+import { innovationQuestions } from './innovation/innovationQuestions';
+import { TileAnagramGame } from './innovation/TileAnagramGame';
 
-const QUESTIONS = [
-  { scrambled: '', answer: 'BINARY', hint: 'The language of computers (0s and 1s)' },
-  { scrambled: '', answer: 'NETWORK', hint: 'Connected systems' },
-  { scrambled: '', answer: 'ALGORITHM', hint: 'Step-by-step instructions' },
-];
+const TIME_LIMIT = 120; // 2 minutes
 
 interface Props {
   onComplete: () => void;
   onClose: () => void;
 }
 
+
 export function DigitalMiniGame({ onComplete, onClose }: Props) {
   return (
-    <AnagramGame
-      questions={QUESTIONS}
-      title="Digital Core"
-      color="#bd00ff"
-      onComplete={onComplete}
-      onClose={onClose}
-    />
+   <TileAnagramGame
+         questions={innovationQuestions}
+         timeLimit={TIME_LIMIT}
+         onComplete={onComplete}
+         onClose={onClose}
+       />
   );
 }

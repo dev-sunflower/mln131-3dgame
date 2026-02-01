@@ -25,4 +25,3 @@ export function renderMiniGame(
 }
 
 export { MiniGameShell } from './MiniGameShell';
-export { AnagramGame } from './AnagramGame';
