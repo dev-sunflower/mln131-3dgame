@@ -174,7 +174,7 @@ export const useGameState = create<GameStore>((set, get) => ({
   gameStarted: false,
   gameComplete: false,
 
-  currentRoom: 0,
+  currentRoom: 2,
   roomsCompleted: [false, false, false],
   isTransitioning: false,
 

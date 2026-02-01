@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useGameState } from '../../../hooks/useGameState';
 import { Room3Environment } from './Room3Environment';
 import { Workbench } from './Workbench';
@@ -8,26 +8,44 @@ import { CoreInventoryDisplay } from './CoreInventoryDisplay';
 import { coreRegistry } from './cores';
 import { CoreStatus, HoverCallback } from './cores/types';
 import { useRoom3UI, CoreId } from './useRoom3UI';
+import DigitalPuzzleModal from './DigitalPuzzleModal';
 
 // Room 3 - 3D ONLY, no DOM elements
 export function Room3() {
   const { room3State, assembleCore } = useGameState();
-  // Use selectors to avoid re-render on tooltip state changes
+
+  // ===== UI store =====
   const openGame = useRoom3UI((s) => s.openGame);
   const setTooltip = useRoom3UI((s) => s.setTooltip);
 
-  // Core clicked -> open mini-game via store
+  // ===== LOCAL STATE for Digital Puzzle =====
+  const [showDigitalPuzzle, setShowDigitalPuzzle] = useState(false);
+  const [puzzleStep, setPuzzleStep] = useState(0);
+
+  /**
+   * Core clicked → open mini-game
+   */
   const handleCoreClick = useCallback(
     (coreId: string) => {
       const coreState = room3State.cores[coreId];
+
       if (coreState?.status === 'locked') {
+        // 👉 DIGITAL → mở puzzle modal
+        if (coreId === 'digital') {
+          setShowDigitalPuzzle(true);
+          return;
+        }
+
+        // 👉 core khác → dùng flow cũ
         openGame(coreId as CoreId);
       }
     },
     [room3State.cores, openGame]
   );
 
-  // Slot clicked -> assemble unlocked core
+  /**
+   * Slot clicked → assemble unlocked core
+   */
   const handleSlotClick = useCallback(
     (coreId: string) => {
       const coreState = room3State.cores[coreId];
@@ -38,7 +56,9 @@ export function Room3() {
     [room3State.cores, assembleCore]
   );
 
-  // Hover handler factory
+  /**
+   * Hover handler factory
+   */
   const createHoverHandler = useCallback(
     (color: string): HoverCallback =>
       (hovered, label, position) => {
@@ -69,6 +89,27 @@ export function Room3() {
       })}
 
       <CoreInventoryDisplay />
+
+      {/* ===== DIGITAL PUZZLE MODAL ===== */}
+      {showDigitalPuzzle && (
+  <DigitalPuzzleModal
+    step={puzzleStep}
+    setStep={() => setPuzzleStep((s) => s + 1)}
+
+    // ✅ ĐÓNG MODAL → KHÔNG RESET STEP
+    onClose={() => {
+      setShowDigitalPuzzle(false);
+    }}
+
+    // ✅ CHỈ RESET KHI HOÀN THÀNH
+    onSuccess={() => {
+      assembleCore("digital");
+      setShowDigitalPuzzle(false);
+      setPuzzleStep(0); // ✅ reset DUY NHẤT ở đây
+    }}
+  />
+)}
+
     </group>
   );
 }
