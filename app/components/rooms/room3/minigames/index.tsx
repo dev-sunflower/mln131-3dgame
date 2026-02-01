@@ -2,9 +2,9 @@
 
 import { ReactNode } from 'react';
 import { CoreId } from '../useRoom3UI';
-import { InnovationMiniGame } from './InnovationMiniGame';
-import { DigitalMiniGame } from './DigitalMiniGame';
-import { JusticeMiniGame } from './JusticeMiniGame';
+import { InnovationMiniGame } from './innovation/InnovationMiniGame';
+import { DigitalMiniGame } from './digital/DigitalMiniGame';
+import { JusticeMiniGame } from './justice/JusticeMiniGame';
 
 // Factory: returns the correct mini-game component for each core
 export function renderMiniGame(

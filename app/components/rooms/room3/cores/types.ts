@@ -1,6 +1,9 @@
 // Core status represents the progression of each core
 export type CoreStatus = 'locked' | 'unlocked' | 'assembled';
 
+// Shape types for different core visuals
+export type CoreShape = 'hexagon' | 'cylinder' | 'crystal' | 'octahedron';
+
 // Configuration for each core's appearance and position
 export interface CoreConfig {
   id: string;
@@ -10,6 +13,7 @@ export interface CoreConfig {
   emissive: string;
   position: [number, number, number];
   slotPosition: [number, number, number];
+  shape?: CoreShape; // Different visual shapes for each core
 }
 
 // Hover callback for tooltip positioning (screen coords)
