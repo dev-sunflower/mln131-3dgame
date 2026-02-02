@@ -191,12 +191,12 @@ export function TileMatchingGame({
           <h2
             className={`text-3xl font-bold mb-4 ${won ? "text-emerald-400" : "text-red-400"}`}
           >
-            {won ? "Core Unlocked!" : "Het Thoi Gian!"}
+            {won ? "Core Unlocked!" : "HẾT THỜI GIAN!"}
           </h2>
           <p className="text-slate-300 mb-6">
             {won
-              ? `Ban da hoan thanh ${paragraphs.length} doan van!`
-              : `Ban da hoan thanh ${step} trong ${paragraphs.length} doan van.`}
+              ? `Bạn đã hoàn thành ${paragraphs.length} đoạn văn!`
+              : `Bạn đã hoàn thành ${step} trong ${paragraphs.length} đoạn văn.`}
           </p>
           <button
             onClick={won ? onComplete : onClose}
@@ -206,7 +206,7 @@ export function TileMatchingGame({
                 : "bg-slate-700 hover:bg-slate-600"
             }`}
           >
-            {won ? "Tiep tuc" : "Thu lai"}
+            {won ? "Tiếp tục" : "Thử lại"}
           </button>
         </div>
       </div>
@@ -229,7 +229,7 @@ export function TileMatchingGame({
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-bold tracking-widest text-yellow-300">
-            DIEN TU VAO DOAN VAN
+            ĐIỀN TỪ VÀO ĐOẠN VĂN
           </h2>
 
           {/* Timer */}
@@ -260,13 +260,13 @@ export function TileMatchingGame({
         {/* Progress */}
         <div className="text-center mb-4">
           <span className="text-yellow-200/70 text-sm font-mono">
-            Doan van {step + 1}/{paragraphs.length}
+            Đoạn văn {step + 1}/{paragraphs.length}
           </span>
         </div>
 
         {/* Instruction */}
         <p className="text-center text-slate-400 text-sm mb-6 font-mono">
-          CHON TU O TREN, SAU DO CLICK VAO CHO TRONG DE DIEN VAO
+          CHỌN TỪ Ở TRÊN, SAU ĐÓ CLICK VÀO CHO TRỐNG ĐỂ ĐIỀN VÀO
         </p>
 
         {/* Word tiles at the top */}
@@ -304,13 +304,13 @@ export function TileMatchingGame({
         {/* Progress */}
         <div className="flex justify-between items-center">
           <span className="text-slate-400 text-sm font-mono">
-            DA DIEN: {Object.keys(filledBlanks).length}/{blanks.length}
+            ĐÃ ĐIỀN: {Object.keys(filledBlanks).length}/{blanks.length}
           </span>
           <button
             onClick={onClose}
             className="px-4 py-2 text-slate-400 hover:text-yellow-300 transition-colors"
           >
-            Thoat
+            Thoát mini game
           </button>
         </div>
       </div>

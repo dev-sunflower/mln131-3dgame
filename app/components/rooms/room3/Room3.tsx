@@ -16,19 +16,23 @@ export function Room3() {
   // ===== UI store =====
   const openGame = useRoom3UI((s) => s.openGame);
   const setTooltip = useRoom3UI((s) => s.setTooltip);
+  const gameStarted = useRoom3UI((s) => s.gameStarted);
 
   /**
-   * Core clicked → open mini-game
+   * Core clicked → open mini-game (only if game has started)
    */
   const handleCoreClick = useCallback(
     (coreId: string) => {
+      // Only allow core interaction after clicking "Start" button
+      if (!gameStarted) return;
+
       const coreState = room3State.cores[coreId];
 
       if (coreState?.status === 'locked') {
         openGame(coreId as CoreId);
       }
     },
-    [room3State.cores, openGame]
+    [room3State.cores, openGame, gameStarted]
   );
 
   /**

@@ -3,9 +3,11 @@
 import { Html } from '@react-three/drei';
 import { useGameState } from '../../../hooks/useGameState';
 import { coreRegistry } from './cores';
+import { useRoom3UI } from './useRoom3UI';
 
 export function CoreInventoryDisplay() {
   const { room3State } = useGameState();
+  const gameStarted = useRoom3UI((s) => s.gameStarted);
 
   return (
     <Html position={[0, 5, -3]} center>
