@@ -7,6 +7,7 @@ import * as THREE from 'three';
 import { useGameState } from '../../../hooks/useGameState';
 import { coreConfigs, coreRegistry } from './cores';
 import { CoreStatus, CoreShape } from './cores/types';
+import { useRoom3UI } from './useRoom3UI';
 
 interface WorkbenchProps {
   onSlotClick: (coreId: string) => void;
@@ -28,12 +29,11 @@ function AssembledCoreGeometry({ shape, size = 0.1 }: { shape?: CoreShape; size?
 }
 
 export function Workbench({ onSlotClick }: WorkbenchProps) {
-  const {
-    room3State,
-    obtainBadge,
-    examineMode,
-    enterExamineMode,
-  } = useGameState();
+  const { room3State, obtainBadge } = useGameState();
+
+  // Get game started state from Room3 UI store
+  const gameStarted = useRoom3UI((s) => s.gameStarted);
+  const startGame = useRoom3UI((s) => s.startGame);
 
   const deviceRef = useRef<THREE.Group>(null);
   const energyRingRef = useRef<THREE.Mesh>(null);
@@ -55,7 +55,6 @@ export function Workbench({ onSlotClick }: WorkbenchProps) {
       <group
         ref={deviceRef}
         position={[0, 0.5, 0]}
-        onClick={() => !examineMode && enterExamineMode('device')}
         onPointerOver={() => setHovered(true)}
         onPointerOut={() => setHovered(false)}
       >
@@ -202,38 +201,82 @@ export function Workbench({ onSlotClick }: WorkbenchProps) {
       </group>
 
 
-      {/* FPT Badge (appears when device is powered) */}
+      {/* FPT Badge (appears when device is powered) - LARGE and visible */}
       {room3State.devicePowered && !room3State.badgeObtained && (
-        <group position={[0, 1.8, 0]} onClick={obtainBadge}>
-          <mesh>
-            <boxGeometry args={[0.35, 0.22, 0.03]} />
-            <meshStandardMaterial
-              color="#ff6b00"
-              emissive="#ff4400"
-              emissiveIntensity={0.6}
-              roughness={0.3}
-              metalness={0.7}
-            />
-          </mesh>
-          {/* Badge glow ring */}
-          <mesh position={[0, 0, -0.02]}>
-            <torusGeometry args={[0.25, 0.02, 8, 24]} />
-            <meshBasicMaterial color="#ff6b00" transparent opacity={0.4} />
-          </mesh>
-          <Html position={[0, 0.2, 0]} center>
-            <div className="text-orange-400 text-xs font-display animate-pulse whitespace-nowrap">
-              FPT Student ID - Click to claim!
+        <Html position={[0, 2.5, 1]} center>
+          <div
+            onClick={obtainBadge}
+            className="cursor-pointer animate-bounce"
+          >
+            {/* FPT Student Card */}
+            <div
+              className="relative p-6 rounded-2xl border-4 border-orange-400
+                         bg-gradient-to-br from-orange-600 via-orange-500 to-yellow-500
+                         shadow-[0_0_60px_#ff6b00,0_0_100px_#ff6b0066]
+                         transform hover:scale-110 transition-all duration-300"
+              style={{ minWidth: '320px' }}
+            >
+              {/* FPT Logo area */}
+              <div className="text-center mb-4">
+                <div className="text-4xl font-black text-white tracking-wider drop-shadow-lg">
+                  FPT UNIVERSITY
+                </div>
+                <div className="text-sm text-orange-100 font-semibold tracking-widest mt-1">
+                  STUDENT ID CARD
+                </div>
+              </div>
+
+              {/* Divider */}
+              <div className="h-1 bg-white/30 rounded-full mb-4" />
+
+              {/* Student info */}
+              <div className="text-white text-center space-y-2">
+                <div className="text-2xl font-bold">🎓 CHÚC MỪNG!</div>
+                <div className="text-lg">Bạn đã hoàn thành Room 3</div>
+              </div>
+
+              {/* Click instruction */}
+              <div className="mt-6 text-center">
+                <div className="inline-block px-6 py-3 bg-white/20 rounded-xl
+                              border-2 border-white/50 text-white font-bold text-lg
+                              hover:bg-white/30 transition-all animate-pulse">
+                  👆 CLICK ĐỂ NHẬN THẺ!
+                </div>
+              </div>
+
+              {/* Decorative corners */}
+              <div className="absolute top-2 left-2 w-4 h-4 border-t-2 border-l-2 border-white/50" />
+              <div className="absolute top-2 right-2 w-4 h-4 border-t-2 border-r-2 border-white/50" />
+              <div className="absolute bottom-2 left-2 w-4 h-4 border-b-2 border-l-2 border-white/50" />
+              <div className="absolute bottom-2 right-2 w-4 h-4 border-b-2 border-r-2 border-white/50" />
             </div>
-          </Html>
-        </group>
+          </div>
+        </Html>
       )}
 
-      {/* Examine hint */}
-      {hovered && !examineMode && (
-        <Html position={[0, 0.9, 0.3]} center>
-          <div className="text-slate-400 text-xs font-mono whitespace-nowrap">
-            Click to examine
-          </div>
+      {/* Start Game button - styled to match room UI */}
+      {!gameStarted && (
+        <Html position={[0, 1.2, 0.5]} center>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              startGame();
+            }}
+            className="
+              px-8 py-4 rounded-lg font-display text-base tracking-wider
+              transition-all duration-300 transform
+              bg-slate-800/90 hover:bg-slate-700/90
+              text-teal-300 hover:text-teal-200
+              border border-teal-500/50 hover:border-teal-400
+              hover:scale-105
+              shadow-[0_0_15px_rgba(20,184,166,0.2)]
+              hover:shadow-[0_0_25px_rgba(20,184,166,0.3)]
+              cursor-pointer
+            "
+            style={{ minWidth: '200px' }}
+          >
+            ▶ BẮT ĐẦU CHƠI
+          </button>
         </Html>
       )}
     </group>

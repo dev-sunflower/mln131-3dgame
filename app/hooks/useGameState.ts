@@ -115,6 +115,7 @@ interface GameStore {
   toggleSound: () => void;
   setLanguage: (lang: 'en' | 'vi') => void;
   resetRoom: (room: number) => void;
+  returnToIntro: () => void;
 }
 
 // Initial knowledge data
@@ -174,7 +175,7 @@ export const useGameState = create<GameStore>((set, get) => ({
   gameStarted: false,
   gameComplete: false,
 
-  currentRoom: 0,
+  currentRoom: 2,
   roomsCompleted: [false, false, false],
   isTransitioning: false,
 
@@ -410,4 +411,5 @@ export const useGameState = create<GameStore>((set, get) => ({
       });
     }
   },
+  returnToIntro: () => set({ showIntro: true, gameStarted: false }),
 }));
