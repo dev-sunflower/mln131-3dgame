@@ -16,7 +16,7 @@ import { BlendFunction } from 'postprocessing';
 import * as THREE from 'three';
 import { useGameState } from '../hooks/useGameState';
 import { Room1 } from './rooms/Room1';
-import { Room2 } from './rooms/Room2';
+import { Room2 } from './rooms/room2';
 import { Room3 } from './rooms/room3';
 
 // Flickering candle light component

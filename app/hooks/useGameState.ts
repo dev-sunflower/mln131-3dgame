@@ -26,8 +26,7 @@ export interface Room1PuzzleState {
 }
 
 export interface Room2PuzzleState {
-  gearsPlaced: { [slotId: string]: string | null }; // slot -> gear id
-  gearsCollected: string[];
+  cores: Record<string, { status: CoreStatus }>;
   machineActivated: boolean;
 }
 
@@ -100,9 +99,8 @@ interface GameStore {
   obtainRoom1Key: () => void;
 
   // Room 2 actions
-  collectGear: (gearId: string) => void;
-  placeGear: (slotId: string, gearId: string) => void;
-  removeGear: (slotId: string) => void;
+  unlockCore: (coreId: string) => void;
+  assembleCore: (coreId: string) => void;
   activateMachine: () => void;
 
   // Room 3 actions
@@ -153,6 +151,38 @@ const initialKnowledge: KnowledgeItem[] = [
     found: false,
   },
   {
+    id: 'economic-base',
+    title: 'Economic Base',
+    titleVi: 'Kinh tế Cơ sở',
+    content: 'The foundation of society consisting of productive forces (technology, labor, tools) and relations of production (ownership, class relations). The economic base determines the superstructure.',
+    contentVi: 'Nền tảng của xã hội bao gồm lực lượng sản xuất (công nghệ, lao động, công cụ) và quan hệ sản xuất (quyền sở hữu, quan hệ giai cấp). Kinh tế cơ sở quyết định kiến trúc thượng tầng.',
+    found: false,
+  },
+  {
+    id: 'superstructure',
+    title: 'Superstructure',
+    titleVi: 'Kiến trúc Thượng tầng',
+    content: 'Politics, law, ideology, and culture built upon and determined by the economic base. The superstructure serves to maintain the rule of the dominant economic class.',
+    contentVi: 'Chính trị, pháp luật, ý thức hệ và văn hóa được xây dựng trên và được quyết định bởi cơ sở kinh tế. Kiến trúc thượng tầng phục vụ để duy trì sự thống trị của giai cấp kinh tế thống trị.',
+    found: false,
+  },
+  {
+    id: 'class-struggle',
+    title: 'Class Struggle',
+    titleVi: 'Đấu tranh Giai cấp',
+    content: 'The motor of historical development. Marx stated: "The history of all hitherto existing society is the history of class struggles." Class struggle drives social change and revolution.',
+    contentVi: 'Động lực của sự phát triển lịch sử. Marx nói: "Lịch sử của mọi xã hội cho đến nay là lịch sử của đấu tranh giai cấp." Đấu tranh giai cấp thúc đẩy sự thay đổi xã hội và cách mạng.',
+    found: false,
+  },
+  {
+    id: 'state-power',
+    title: 'State Power',
+    titleVi: 'Chính quyền Nhà nước',
+    content: 'The dictatorship of the proletariat - working class political rule during the transition to communism. The socialist state defends the revolution and gradually creates conditions for its own withering away.',
+    contentVi: 'Chuyên chính vô sản - sự thống trị chính trị của giai cấp công nhân trong thời kỳ quá độ lên chủ nghĩa cộng sản. Nhà nước xã hội chủ nghĩa bảo vệ cách mạng và dần tạo điều kiện cho sự tiêu vong của chính nó.',
+    found: false,
+  },
+  {
     id: 'vietnam',
     title: "Vietnam's Path",
     titleVi: 'Con đường Việt Nam',
@@ -197,13 +227,12 @@ export const useGameState = create<GameStore>((set, get) => ({
   },
 
   room2State: {
-    gearsPlaced: {
-      economy: null,
-      politics: null,
-      social: null,
-      culture: null,
+    cores: {
+      'economic-base': { status: 'locked' },
+      'superstructure': { status: 'locked' },
+      'class-struggle': { status: 'locked' },
+      'state-power': { status: 'locked' },
     },
-    gearsCollected: [],
     machineActivated: false,
   },
 
@@ -294,43 +323,51 @@ export const useGameState = create<GameStore>((set, get) => ({
   },
 
   // Room 2 actions
-  collectGear: (gearId) => set((state) => ({
+  unlockCore: (coreId) => set((state) => ({
     room2State: {
       ...state.room2State,
-      gearsCollected: [...state.room2State.gearsCollected, gearId],
+      cores: {
+        ...state.room2State.cores,
+        [coreId]: { status: 'unlocked' },
+      },
     },
   })),
-  placeGear: (slotId, gearId) => set((state) => ({
-    room2State: {
-      ...state.room2State,
-      gearsPlaced: { ...state.room2State.gearsPlaced, [slotId]: gearId },
-      gearsCollected: state.room2State.gearsCollected.filter((g) => g !== gearId),
-    },
-  })),
-  removeGear: (slotId) => set((state) => {
-    const gearId = state.room2State.gearsPlaced[slotId];
-    if (!gearId) return state;
-    return {
+  assembleCore: (coreId) => {
+    set((state) => ({
       room2State: {
         ...state.room2State,
-        gearsPlaced: { ...state.room2State.gearsPlaced, [slotId]: null },
-        gearsCollected: [...state.room2State.gearsCollected, gearId],
+        cores: {
+          ...state.room2State.cores,
+          [coreId]: { status: 'assembled' },
+        },
       },
-    };
-  }),
+    }));
+    // Check if all cores are assembled, then activate machine
+    const state = get();
+    const allAssembled = Object.values(state.room2State.cores).every(
+      (core) => core.status === 'assembled'
+    );
+    if (allAssembled && !state.room2State.machineActivated) {
+      state.activateMachine();
+    }
+  },
   activateMachine: () => {
     const state = get();
     state.addKnowledge('transition');
+    state.addKnowledge('economic-base');
+    state.addKnowledge('superstructure');
+    state.addKnowledge('class-struggle');
+    state.addKnowledge('state-power');
     state.addKnowledge('vietnam');
     set((state) => ({
       room2State: { ...state.room2State, machineActivated: true },
     }));
     get().addToInventory({
-      id: 'machine-component',
-      name: 'Clockwork Core',
-      nameVi: 'Lõi cơ khí',
-      description: 'A glowing component from the orrery',
-      icon: 'cog',
+      id: 'socialist-theory',
+      name: 'Socialist Theory Module',
+      nameVi: 'Mô-đun Lý thuyết XHCN',
+      description: 'A crystallized understanding of socialist principles',
+      icon: 'star',
     });
     get().completeRoom(1);
   },
@@ -392,8 +429,12 @@ export const useGameState = create<GameStore>((set, get) => ({
     } else if (room === 1) {
       set({
         room2State: {
-          gearsPlaced: { economy: null, politics: null, social: null, culture: null },
-          gearsCollected: [],
+          cores: {
+            'economic-base': { status: 'locked' },
+            'superstructure': { status: 'locked' },
+            'class-struggle': { status: 'locked' },
+            'state-power': { status: 'locked' },
+          },
           machineActivated: false,
         },
       });
