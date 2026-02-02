@@ -8,31 +8,31 @@ export const digitalQuestions: DigitalQuestion[] = [
   {
     id: 1,
     question:
-      "Theo C. Mác, giữa xã hội tư bản chủ nghĩa và xã hội cộng sản chủ nghĩa tồn tại một thời kỳ gì?",
-    answer: "Qua Do",
+      "Thời kỳ quá độ lên chủ nghĩa xã hội diễn ra sau khi giai cấp nào giành được chính quyền?",
+    answer: "Giai cap vo san",
   },
   {
     id: 2,
     question:
-      "Nhà nước trong thời kỳ quá độ theo Mác mang bản chất gì?",
-    answer: "Chuyen Chinh",
+      "Đặc điểm nổi bật nhất của thời kỳ quá độ lên chủ nghĩa xã hội là sự đan xen giữa những yếu tố nào?",
+    answer: "Cu Va Moi",
   },
   {
     id: 3,
     question:
-      "Giai đoạn thấp của hình thái kinh tế – xã hội cộng sản chủ nghĩa được gọi là gì?",
-    answer: "Xa Hoi Chu Nghia",
+      "Theo Hồ Chí Minh, trong thời kỳ quá độ, kinh tế thị trường được xem là phương tiện hay mục tiêu cuối cùng?",
+    answer: "Phuong Tien",
   },
   {
     id: 4,
     question:
-      "Nguyên tắc phân phối ở giai đoạn cao của chủ nghĩa cộng sản là gì?",
-    answer: "Theo Nhu Cau",
+      "Trong lĩnh vực chính trị, chính quyền trong thời kỳ quá độ phải thuộc về ai?",
+    answer: "Nhan Dan lao dong",
   },
   {
     id: 5,
     question:
-      "Việt Nam đi lên chủ nghĩa xã hội theo con đường quá độ nào?",
-    answer: "Gian Tiep",
+      "Trong lĩnh vực tư tưởng – văn hóa, Hồ Chí Minh chủ trương tiếp thu tinh hoa văn hóa nào để xây dựng con người mới?",
+    answer: "Nhan Loai",
   },
 ];

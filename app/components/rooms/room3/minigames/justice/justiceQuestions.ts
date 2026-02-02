@@ -9,27 +9,28 @@ export interface JusticeParagraph {
 export const justiceParagraphs: JusticeParagraph[] = [
   {
     id: 1,
-    text: "Nhà nước pháp quyền xã hội chủ nghĩa Việt Nam là nhà nước của [0], do [1] và vì [2]. Tất cả quyền lực nhà nước thuộc về [3], với nền tảng là liên minh giữa giai cấp công nhân, nông dân và đội ngũ trí thức.",
-    blanks: ["Nhân dân", "Nhân dân", "Nhân dân", "Nhân dân"],
+    text: "Chủ nghĩa xã hội vừa là [0] đấu tranh thực tiễn của nhân dân lao động chống áp bức, vừa là [1] tư tưởng và lý luận phản ánh lý tưởng giải phóng con người khỏi [2].",
+    blanks: ["phong trào", "trào lưu", "bất công"],
   },
   {
     id: 2,
-    text: "Hiến pháp là [0] của nước Cộng hòa xã hội chủ nghĩa Việt Nam. Quyền [1] thuộc về Quốc hội, quyền [2] thuộc về Chính phủ, và quyền [3] thuộc về Tòa án nhân dân.",
-    blanks: ["luật cơ bản", "lập pháp", "hành pháp", "tư pháp"],
+    text: "Theo quan điểm Mác – Lênin, chủ nghĩa xã hội là [0] của hình thái kinh tế – xã hội [1] chủ nghĩa, giữ vị trí đặc biệt trong tiến trình phát triển lịch sử nhân loại.",
+    blanks: ["giai đoạn đầu", "cộng sản"],
   },
   {
     id: 3,
-    text: "Mọi công dân đều [0] trước pháp luật, không ai bị [1] đối xử trong đời sống chính trị, kinh tế, văn hóa, xã hội. Công dân có quyền [2] khi đủ 18 tuổi và quyền [3] khi đủ 21 tuổi.",
-    blanks: ["bình đẳng", "phân biệt", "bầu cử", "ứng cử"],
+    text: "Lịch sử nhân loại phát triển tuần tự qua các hình thái kinh tế – xã hội từ [0] đến [1], trong đó chủ nghĩa tư bản dựa trên sở hữu [2] và lao động [3].",
+    blanks: ["thấp", "cao", "tư bản", "làm thuê"],
   },
   {
     id: 4,
-    text: "Đảng Cộng sản Việt Nam là [0] lãnh đạo Nhà nước và xã hội. Đảng hoạt động theo nguyên tắc [1]. Mặt trận Tổ quốc Việt Nam là tổ chức đại diện cho [2] toàn dân tộc.",
-    blanks: ["lực lượng", "tập trung dân chủ", "khối đại đoàn kết"],
+    text: "Chủ nghĩa xã hội xuất hiện khi chủ nghĩa [0] phát triển đến một trình độ nhất định, khi sự [1] bộc lộ gay gắt, thúc đẩy người lao động đấu tranh để được [2].",
+    blanks: ["tư bản", "bóc lột", "giải phóng"],
   },
   {
     id: 5,
-    text: "[0] là giá trị cốt lõi của nền tư pháp. Nguyên tắc [1] đảm bảo rằng một người chỉ bị coi là có tội khi có [2] của Tòa án. Luật sư có vai trò [3] quyền và lợi ích hợp pháp của thân chủ.",
-    blanks: ["Công lý", "suy đoán vô tội", "bản án", "bảo vệ"],
+    text: "Trong hình thái kinh tế – xã hội cộng sản chủ nghĩa, giai đoạn [0] là chủ nghĩa xã hội, đóng vai trò [1] để tiến tới giai đoạn [2] là chủ nghĩa cộng sản [3].",
+    blanks: ["thấp", "bước đệm", "cao", "hoàn chỉnh"],
   },
+
 ];
