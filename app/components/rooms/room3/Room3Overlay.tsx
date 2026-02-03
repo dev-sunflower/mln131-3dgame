@@ -109,10 +109,61 @@ function GameOverlay() {
   );
 }
 
+// Start screen
+function StartScreen() {
+  const gameStarted = useRoom3UI((s) => s.gameStarted);
+  const startGame = useRoom3UI((s) => s.startGame);
+  const { language } = useGameState();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
+
+  if (!mounted || gameStarted) return null;
+
+  return createPortal(
+    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+      <div className="bg-gradient-to-br from-cyan-900/90 to-black/90 border-2 border-cyan-600 rounded-lg p-8 max-w-2xl">
+        <div className="text-6xl mb-4 text-center">🚀</div>
+        <h1 className="text-4xl font-display text-cyan-500 mb-4 text-center">
+          {language === 'en' ? 'Room 3: Innovation & Future' : 'Phòng 3: Đổi Mới & Tương Lai'}
+        </h1>
+        
+        <div className="text-cyan-100 space-y-3 mb-6">
+          <p>
+            <strong className="text-cyan-400">{language === 'en' ? 'Mission:' : 'Nhiệm vụ:'}</strong><br/>
+            {language === 'en' 
+              ? 'Apply socialist principles to innovation, digital transformation, and social justice.'
+              : 'Áp dụng nguyên lý xã hội chủ nghĩa vào đổi mới, chuyển đổi số và công bằng xã hội.'
+            }
+          </p>
+          
+          <ul className="list-disc list-inside space-y-2 text-sm ml-4">
+            <li><span className="text-green-400">Innovation Core</span> - {language === 'en' ? 'Startup spirit' : 'Tinh thần khởi nghiệp'}</li>
+            <li><span className="text-blue-400">Digital Core</span> - {language === 'en' ? 'Digital transformation' : 'Chuyển đổi số'}</li>
+            <li><span className="text-purple-400">Justice Core</span> - {language === 'en' ? 'Social justice' : 'Công bằng xã hội'}</li>
+          </ul>
+        </div>
+
+        <button
+          onClick={startGame}
+          className="w-full px-6 py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-display text-lg rounded transition-colors border border-cyan-400"
+        >
+          {language === 'en' ? 'Start' : 'Bắt Đầu'}
+        </button>
+      </div>
+    </div>,
+    document.body
+  );
+}
+
 // Combined overlay - render outside Canvas
 export function Room3Overlay() {
   return (
     <>
+      <StartScreen />
       <ExitButton />
       <Tooltip />
       <GameOverlay />

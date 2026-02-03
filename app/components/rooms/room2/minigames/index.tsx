@@ -10,12 +10,12 @@ import { StatePowerMiniGame } from './state-power/StatePowerMiniGame';
 export function Room2MiniGames() {
   const activeGame = useRoom2UI((s) => s.activeGame);
   const closeGame = useRoom2UI((s) => s.closeGame);
-  const { unlockCore } = useGameState();
+  const { unlockRoom2Core } = useGameState();
 
   if (!activeGame) return null;
 
   const handleComplete = () => {
-    unlockCore(activeGame);
+    unlockRoom2Core(activeGame);
     closeGame();
   };
 

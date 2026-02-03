@@ -16,29 +16,31 @@ export function IntroScreen() {
   const content = {
     en: {
       title: "THE GREAT TRANSITION",
-      subtitle: "The Journey from Capitalism to Communism",
+      subtitle: "Socialism and the Path to Communism",
       description:
-        "You find yourself in a mysterious Victorian mansion containing ancient secrets of humanity's social evolution. Examine the intricate puzzle boxes and mechanisms to understand the path from Capitalism to Communism.",
+        "Embark on an educational journey through the principles of Marxist-Leninist theory. Explore three interconnected spaces that reveal the foundations of socialism, the transition period, and the future of innovation in a socialist society.",
       rooms: [
-        { name: "The Antique Study", sub: "Foundations" },
-        { name: "The Clockwork Chamber", sub: "Transition" },
-        { name: "The Innovation Workshop", sub: "Future" },
+        { name: "Revolutionary Foundation", sub: "Marxist Theory", icon: "📚" },
+        { name: "Socialist Theory", sub: "Transition Period", icon: "⚙️" },
+        { name: "Innovation & Future", sub: "Modern Application", icon: "🚀" },
       ],
-      button: "BEGIN EXPLORATION",
-      hint: "Click objects to examine them. Drag to rotate. Scroll to zoom.",
+      button: "BEGIN YOUR JOURNEY",
+      hint: "Click on glowing objects to interact. Complete mini-games to unlock knowledge.",
+      mission: "Learn about socialism through interactive challenges and unlock the path forward!"
     },
     vi: {
       title: "CUỘC CHUYỂN ĐỔI VĨ ĐẠI",
-      subtitle: "Hành trình từ Tư bản chủ nghĩa đến Cộng sản chủ nghĩa",
+      subtitle: "Chủ nghĩa Xã hội và Con đường lên Chủ nghĩa Cộng sản",
       description:
-        "Bạn đang ở trong một dinh thự Victoria bí ẩn chứa đựng những bí mật cổ xưa về sự tiến hóa xã hội của nhân loại. Khám phá các hộp câu đố và cơ chế tinh xảo để hiểu con đường từ Chủ nghĩa Tư bản đến Chủ nghĩa Cộng sản.",
+        "Khởi hành một hành trình giáo dục qua các nguyên lý lý thuyết Mác-Lênin. Khám phá ba không gian kết nối với nhau, tiết lộ nền tảng của chủ nghĩa xã hội, thời kỳ quá độ, và tương lai đổi mới trong xã hội xã hội chủ nghĩa.",
       rooms: [
-        { name: "Phòng Nghiên Cứu Cổ", sub: "Nền Tảng" },
-        { name: "Phòng Cơ Khí", sub: "Quá Độ" },
-        { name: "Xưởng Đổi Mới", sub: "Tương Lai" },
+        { name: "Nền Tảng Cách Mạng", sub: "Lý thuyết Mác-xít", icon: "📚" },
+        { name: "Lý Thuyết Xã Hội", sub: "Thời kỳ Quá độ", icon: "⚙️" },
+        { name: "Đổi Mới & Tương Lai", sub: "Ứng dụng Hiện đại", icon: "🚀" },
       ],
-      button: "BẮT ĐẦU KHÁM PHÁ",
-      hint: "Nhấn vào vật thể để soi. Kéo để xoay. Lăn chuột để phóng to.",
+      button: "BẮT ĐẦU HÀNH TRÌNH",
+      hint: "Nhấn vào các vật thể phát sáng để tương tác. Hoàn thành mini-game để mở khóa kiến thức.",
+      mission: "Học về chủ nghĩa xã hội qua các thử thách tương tác và mở khóa con đường tiến lên!"
     },
   };
 
@@ -136,14 +138,25 @@ export function IntroScreen() {
           className="mt-8 grid grid-cols-3 gap-4"
         >
           {t.rooms.map((room, idx) => (
-            <div key={idx} className="p-4 border border-brass-gold/30 rounded bg-black/30">
+            <div key={idx} className="p-4 border border-brass-gold/30 rounded bg-black/30 hover:bg-black/40 transition-all">
+              <div className="text-4xl mb-2">{room.icon}</div>
               <div className="text-brass-gold font-display text-sm mb-1">
                 {language === "en" ? `ROOM ${idx + 1}` : `PHÒNG ${idx + 1}`}
               </div>
-              <div className="text-parchment text-sm">{room.name}</div>
-              <div className="text-gray-300 text-xs mt-1">{room.sub}</div>
+              <div className="text-parchment text-sm font-bold">{room.name}</div>
+              <div className="text-gray-400 text-xs mt-1">{room.sub}</div>
             </div>
           ))}
+        </motion.div>
+
+        {/* Mission statement */}
+        <motion.div
+          initial={{ y: 30, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 1.2 }}
+          className="mt-6 p-4 bg-red-900/20 border border-red-600/30 rounded-lg"
+        >
+          <p className="text-red-400 text-sm font-display">{t.mission}</p>
         </motion.div>
 
         {/* Start button */}
@@ -152,7 +165,7 @@ export function IntroScreen() {
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 1.3 }}
           onClick={startGame}
-          className="mt-10 px-8 py-4 bg-gradient-to-r from-brass-dark to-brass-gold border border-brass-gold text-[#0a0808] font-display text-lg tracking-widest rounded hover:shadow-[0_0_30px_rgba(181,137,74,0.5)] transition-all duration-300 flex items-center gap-3 mx-auto"
+          className="mt-8 px-8 py-4 bg-gradient-to-r from-red-800 to-red-600 border-2 border-red-500 text-white font-display text-lg tracking-widest rounded-lg hover:shadow-[0_0_30px_rgba(220,38,38,0.6)] hover:scale-105 transition-all duration-300 flex items-center gap-3 mx-auto"
         >
           <Key className="w-5 h-5" />
           {t.button}
@@ -163,7 +176,7 @@ export function IntroScreen() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.5 }}
-          className="mt-6 text-gray-300 text-sm"
+          className="mt-6 text-gray-400 text-sm"
         >
           {t.hint}
         </motion.p>

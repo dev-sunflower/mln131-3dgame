@@ -10,6 +10,7 @@ import { KnowledgeSidebar } from './ui/KnowledgeSidebar';
 import { IntroScreen } from './ui/IntroScreen';
 import { VictoryScreen } from './ui/VictoryScreen';
 import { HintModal } from './ui/HintModal';
+import { Room1Overlay } from './rooms/room1';
 import { Room2Overlay } from './rooms/room2';
 import { Room3Overlay } from './rooms/room3';
 import { useGameState } from '../hooks/useGameState';
@@ -83,6 +84,7 @@ export function Game() {
       <Inventory />
       <KnowledgeSidebar />
       <HintModal />
+      {currentRoom === 0 && <Room1Overlay />}
       {currentRoom === 1 && <Room2Overlay />}
       {currentRoom === 2 && <Room3Overlay />}
 

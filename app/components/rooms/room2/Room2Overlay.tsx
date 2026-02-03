@@ -129,7 +129,7 @@ function Tooltip() {
 function GameOverlay() {
   const activeGame = useRoom2UI((s) => s.activeGame);
   const closeGame = useRoom2UI((s) => s.closeGame);
-  const { unlockCore } = useGameState();
+  const { unlockRoom2Core } = useGameState();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -140,7 +140,7 @@ function GameOverlay() {
   if (!mounted || !activeGame) return null;
 
   const handleComplete = () => {
-    unlockCore(activeGame);
+    unlockRoom2Core(activeGame);
     closeGame();
   };
 

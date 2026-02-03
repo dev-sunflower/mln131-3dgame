@@ -10,7 +10,7 @@ import { CoreStatus, HoverCallback } from './cores/types';
 import { useRoom2UI, CoreId } from './useRoom2UI';
 
 export function Room2() {
-  const { room2State, assembleCore } = useGameState();
+  const { room2State, assembleRoom2Core } = useGameState();
 
   const openGame = useRoom2UI((s) => s.openGame);
   const setTooltip = useRoom2UI((s) => s.setTooltip);
@@ -33,10 +33,10 @@ export function Room2() {
     (coreId: string) => {
       const coreState = room2State.cores[coreId];
       if (coreState?.status === 'unlocked') {
-        assembleCore(coreId);
+        assembleRoom2Core(coreId);
       }
     },
-    [room2State.cores, assembleCore]
+    [room2State.cores, assembleRoom2Core]
   );
 
   const createHoverHandler = useCallback(

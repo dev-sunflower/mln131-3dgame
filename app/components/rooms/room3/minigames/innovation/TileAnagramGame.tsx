@@ -78,15 +78,17 @@ export function TileAnagramGame({
         }
       }, 800);
     } else {
-      // Wrong answer - apply time penalty
-      setIsWrong(true);
-      setTimeLeft((t) => Math.max(0, t - timePenalty));
-      setTimeout(() => {
-        setIsWrong(false);
-        // Reset slots for retry
-        setSelectedSlots(new Array(answerLength).fill(null));
-        setAvailableLetters((prev) => prev.map((l) => ({ ...l, used: false })));
-      }, 500);
+      // Wrong answer - apply time penalty ONLY if not already in wrong state
+      if (!isWrong) {
+        setIsWrong(true);
+        setTimeLeft((t) => Math.max(0, t - timePenalty));
+        setTimeout(() => {
+          setIsWrong(false);
+          // Reset slots for retry
+          setSelectedSlots(new Array(answerLength).fill(null));
+          setAvailableLetters((prev) => prev.map((l) => ({ ...l, used: false })));
+        }, 500);
+      }
     }
   }, [
     selectedSlots,
@@ -95,6 +97,7 @@ export function TileAnagramGame({
     questions.length,
     timePenalty,
     answerLength,
+    isWrong,
   ]);
 
   // Click available letter → add to first empty slot

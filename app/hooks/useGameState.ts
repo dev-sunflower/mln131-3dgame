@@ -99,8 +99,8 @@ interface GameStore {
   obtainRoom1Key: () => void;
 
   // Room 2 actions
-  unlockCore: (coreId: string) => void;
-  assembleCore: (coreId: string) => void;
+  unlockRoom2Core: (coreId: string) => void;
+  assembleRoom2Core: (coreId: string) => void;
   activateMachine: () => void;
 
   // Room 3 actions
@@ -205,7 +205,7 @@ export const useGameState = create<GameStore>((set, get) => ({
   gameStarted: false,
   gameComplete: false,
 
-  currentRoom: 2,
+  currentRoom: 0,
   roomsCompleted: [false, false, false],
   isTransitioning: false,
 
@@ -309,21 +309,25 @@ export const useGameState = create<GameStore>((set, get) => ({
     }));
   },
   obtainRoom1Key: () => {
+    const state = get();
+    state.addKnowledge('manifesto');
+    state.addKnowledge('objective');
+    state.addKnowledge('subjective');
     set((state) => ({
       room1State: { ...state.room1State, keyObtained: true },
     }));
     get().addToInventory({
       id: 'room1-key',
-      name: 'Brass Key',
-      nameVi: 'Chìa khóa đồng',
-      description: 'An ornate brass key from the puzzle box',
+      name: 'Revolutionary Knowledge',
+      nameVi: 'Kiến thức Cách mạng',
+      description: 'Understanding of Marxist fundamentals',
       icon: 'key',
     });
     get().completeRoom(0);
   },
 
   // Room 2 actions
-  unlockCore: (coreId) => set((state) => ({
+  unlockRoom2Core: (coreId) => set((state) => ({
     room2State: {
       ...state.room2State,
       cores: {
@@ -332,7 +336,7 @@ export const useGameState = create<GameStore>((set, get) => ({
       },
     },
   })),
-  assembleCore: (coreId) => {
+  assembleRoom2Core: (coreId) => {
     set((state) => ({
       room2State: {
         ...state.room2State,

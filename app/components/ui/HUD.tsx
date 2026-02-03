@@ -33,15 +33,15 @@ export function HUD() {
   } = useGameState();
 
   const roomNames = [
-    { en: 'The Antique Study', vi: 'Phòng Nghiên Cứu Cổ' },
-    { en: 'The Clockwork Chamber', vi: 'Phòng Cơ Khí' },
-    { en: 'The Innovation Workshop', vi: 'Xưởng Đổi Mới' },
+    { en: 'Revolutionary Foundation', vi: 'Nền Tảng Cách Mạng' },
+    { en: 'Socialist Theory', vi: 'Lý Thuyết Xã Hội' },
+    { en: 'Innovation & Future', vi: 'Đổi Mới & Tương Lai' },
   ];
 
   const roomDescriptions = [
-    { en: 'Solve the puzzle box to discover the foundations', vi: 'Giải hộp câu đố để khám phá nền tảng' },
-    { en: 'Place the gears to activate the orrery', vi: 'Đặt bánh răng để kích hoạt thiên cầu' },
-    { en: 'Assemble the device to power innovation', vi: 'Lắp ráp thiết bị để thúc đẩy đổi mới' },
+    { en: 'Discover Marxist fundamentals', vi: 'Khám phá nền tảng Mác-xít' },
+    { en: 'Learn socialist principles', vi: 'Học lý thuyết xã hội chủ nghĩa' },
+    { en: 'Apply to modern innovation', vi: 'Áp dụng vào đổi mới hiện đại' },
   ];
 
   // Handle ESC key to exit examine mode
@@ -67,7 +67,21 @@ export function HUD() {
     if (newRoom === currentRoom) return;
 
     // Can only go forward if current room is complete
-    if (direction === 'next' && !roomsCompleted[currentRoom]) return;
+    if (direction === 'next' && !roomsCompleted[currentRoom]) {
+      // Show alert that room must be completed first
+      alert(language === 'en' 
+        ? 'Complete this room first before moving forward!' 
+        : 'Hoàn thành phòng này trước khi tiếp tục!');
+      return;
+    }
+
+    // Can only go to room if previous room is complete
+    if (newRoom > 0 && !roomsCompleted[newRoom - 1]) {
+      alert(language === 'en'
+        ? `Complete Room ${newRoom} first!`
+        : `Hoàn thành Phòng ${newRoom} trước!`);
+      return;
+    }
 
     setTransitioning(true);
     setTimeout(() => {
